@@ -99,7 +99,7 @@ def highlight_cells(val, row, col, date_val, team):
     return style
 
 # 스타일 지정
-styled = df_pivot.style.set_caption(f"{selected_team} Pitches by Game ({start_date} ~ {end_date})") \
+styled = df_pivot.style.set_caption(f"📊{selected_team} Pitches by Game ({start_date} ~ {end_date})") \
     .set_properties(**{'text-align': 'center', 'padding': '8px', 'line-height': '1.6'}) \
     .set_table_styles([
         {'selector': 'th', 'props': [('text-align', 'center'), ('padding', '8px'), ('line-height', '1.6')]},
