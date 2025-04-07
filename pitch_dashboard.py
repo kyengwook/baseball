@@ -91,7 +91,7 @@ def highlight_cells(val, row, col, date_val, team):
     style = ''
     if row in ['Total', 'Back-to-Back']:
         return ''
-    if isinstance(val, (int, float)) and val >= 70:
+    if isinstance(val, (int, float)) and val >= 60:
         style += 'background-color: #ff9999;'  # 빨간색
     b2b_dates = highlight_info.get(col, set())
     if isinstance(date_val, date) and date_val in b2b_dates:
