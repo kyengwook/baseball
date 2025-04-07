@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
-import requests
-from io import StringIO
 from datetime import datetime, date
+import io
+import requests
 
 # 전체 30개 MLB 팀
 teams = ['BAL', 'LAA', 'MIL', 'SF', 'PIT', 'DET', 'SEA', 'COL', 'AZ', 'TOR',
@@ -11,7 +11,7 @@ teams = ['BAL', 'LAA', 'MIL', 'SF', 'PIT', 'DET', 'SEA', 'COL', 'AZ', 'TOR',
 
 # 페이지 설정
 st.set_page_config(layout="wide")
-st.title("? MLB 투수 투구수 분석 대시보드")
+st.title("⚾ MLB 투수 투구수 분석 대시보드")
 
 # 날짜 범위 선택
 start_date = st.date_input("시작 날짜", value=date(2025, 4, 1))
@@ -20,29 +20,28 @@ end_date = st.date_input("종료 날짜", value=date(2025, 4, 5))
 # 팀 선택
 selected_team = st.selectbox("팀 선택", teams)
 
-# CSV 데이터 불러오기 (requests로 Google Drive 파일 읽기)
+# CSV 데이터 로드 함수 (Google Drive 링크 사용)
 @st.cache_data
-def load_data():
-    file_id = "1sWJCEA7MUrOCGfj61ES1JQHJGBfYVYN3"
-    url = f"https://drive.google.com/uc?id={file_id}"
-    response = requests.get(url)
-    if response.status_code != 200:
-        st.error("데이터를 불러오는 데 실패했습니다.")
-        return pd.DataFrame()
-    
-    from io import BytesIO
-    csv_data = BytesIO(response.content)
-    df = pd.read_csv(csv_data, encoding="latin1")  # 인코딩 오류 방지
+def load_data_from_drive():
+    file_id = "1sWJCEA7MUrOCGfj61ES1JQHJGBfYVYN3"  # 공유 링크에서 추출한 ID
+    download_url = f"https://drive.google.com/uc?export=download&id={file_id}"
+    response = requests.get(download_url)
+    response.raise_for_status()
+    df = pd.read_csv(io.StringIO(response.content.decode("utf-8")), encoding='utf-8')
     df = df[df['game_type'] == 'R']
     df['game_date'] = pd.to_datetime(df['game_date'])
+    df = df.set_index('game_date').sort_index()
     return df
 
+# 데이터 불러오기
+df = load_data_from_drive()
 
-df = load_data()
-if df.empty:
+# 날짜 범위 확인
+if df.index.min() > pd.to_datetime(start_date) or df.index.max() < pd.to_datetime(end_date):
+    st.warning("선택한 날짜 범위에 해당하는 데이터가 없습니다.")
     st.stop()
 
-df = df.set_index('game_date')
+# 날짜로 필터링
 df_filtered = df.loc[str(start_date):str(end_date)].copy()
 
 # 연투 계산 함수
@@ -107,6 +106,5 @@ styled = df_pivot.style.set_caption(f"{selected_team} 팀 투구수 ({start_date
         for row, val in zip(df.index, col)
     ], axis=0), axis=None)
 
-# 표시
+# 결과 표시
 st.write(styled.to_html(), unsafe_allow_html=True)
-
