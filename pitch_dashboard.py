@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+import requests
+from io import StringIO
 from datetime import datetime, date
 
 # 전체 30개 MLB 팀
@@ -18,16 +20,25 @@ end_date = st.date_input("종료 날짜", value=date(2025, 4, 5))
 # 팀 선택
 selected_team = st.selectbox("팀 선택", teams)
 
-# CSV 데이터 불러오기 (Google Drive 링크 사용)
+# CSV 데이터 불러오기 (requests로 Google Drive 파일 읽기)
 @st.cache_data
 def load_data():
-    url = "https://drive.google.com/uc?id=1sWJCEA7MUrOCGfj61ES1JQHJGBfYVYN3"
-    df = pd.read_csv(url)
+    file_id = "1sWJCEA7MUrOCGfj61ES1JQHJGBfYVYN3"
+    url = f"https://drive.google.com/uc?id={file_id}"
+    response = requests.get(url)
+    if response.status_code != 200:
+        st.error("데이터를 불러오는 데 실패했습니다.")
+        return pd.DataFrame()
+    csv_data = StringIO(response.text)
+    df = pd.read_csv(csv_data)
     df = df[df['game_type'] == 'R']
     df['game_date'] = pd.to_datetime(df['game_date'])
     return df
 
 df = load_data()
+if df.empty:
+    st.stop()
+
 df = df.set_index('game_date')
 df_filtered = df.loc[str(start_date):str(end_date)].copy()
 
