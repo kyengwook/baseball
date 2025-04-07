@@ -6,7 +6,7 @@ import requests
 
 
 teams = ['LAD', 'SD', 'SF', 'AZ', 'COL',
-         'CHC, 'MIL', 'STL', 'CIN', PIT',
+         'CHC', 'MIL', 'STL', 'CIN', PIT',
          'PHI', 'NYM', 'MIA', 'WSH', 'ATL',
          'NYY', 'BOS', 'TOR', 'TB', 'BAL',
          'DET', 'KC', 'CLE', 'MIN', 'CWS',
