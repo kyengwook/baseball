@@ -4,17 +4,17 @@ from datetime import datetime, date
 import io
 import requests
 
-# 전체 30개 MLB 팀
+
 teams = ['BAL', 'LAA', 'MIL', 'SF', 'PIT', 'DET', 'SEA', 'COL', 'AZ', 'TOR',
          'CWS', 'NYM', 'ATL', 'STL', 'KC', 'PHI', 'MIN', 'BOS', 'CLE', 'NYY',
          'WSH', 'TB', 'CIN', 'CHC', 'HOU', 'MIA', 'TEX', 'SD', 'OAK', 'LAD', 'ARI']
 
-# 페이지 설정
+
 st.set_page_config(layout="wide")
 st.title("⚾ MLB Pitches")
 
 # 날짜 범위 선택
-start_date = st.date_input("Start Date", value=date(2025, 4, 1))
+start_date = st.date_input("Start Date", value=date(2025, 3, 18))
 end_date = st.date_input("End Date", value=date(2025, 4, 5))
 
 # 팀 선택
@@ -23,7 +23,7 @@ selected_team = st.selectbox("Select Team", teams)
 # CSV 데이터 로드 함수 (Google Drive 링크 사용)
 @st.cache_data
 def load_data_from_drive():
-    file_id = "1sWJCEA7MUrOCGfj61ES1JQHJGBfYVYN3"  # 공유 링크에서 추출한 ID
+    file_id = "1sWJCEA7MUrOCGfj61ES1JQHJGBfYVYN3"  
     download_url = f"https://drive.google.com/uc?export=download&id={file_id}"
     response = requests.get(download_url)
     response.raise_for_status()
