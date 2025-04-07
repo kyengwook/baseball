@@ -21,7 +21,8 @@ selected_team = st.selectbox("팀 선택", teams)
 # CSV 데이터 불러오기
 @st.cache_data
 def load_data():
-    df = pd.read_csv("/Users/kyengwook/Documents/Baseball/PB/mlb_pbp_data/mlb_pbp_2025.csv", encoding='cp949')
+    df = pd.read_csv("mlb_pbp_2025.csv", encoding='ISO-8859-1')  # 또는 cp949
+
 
     df = df[df['game_type'] == 'R']
     df['game_date'] = pd.to_datetime(df['game_date'])
