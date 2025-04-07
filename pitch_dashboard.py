@@ -2,26 +2,27 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime, date
 
-# ÀüÃ¼ 30°³ MLB ÆÀ
+# ì „ì²´ 30ê°œ MLB íŒ€
 teams = ['BAL', 'LAA', 'MIL', 'SF', 'PIT', 'DET', 'SEA', 'COL', 'AZ', 'TOR',
          'CWS', 'NYM', 'ATL', 'STL', 'KC', 'PHI', 'MIN', 'BOS', 'CLE', 'NYY',
          'WSH', 'TB', 'CIN', 'CHC', 'HOU', 'MIA', 'TEX', 'SD', 'OAK', 'LAD', 'ARI']
 
-# ÆäÀÌÁö ¼³Á¤
+# í˜ì´ì§€ ì„¤ì •
 st.set_page_config(layout="wide")
-st.title("? MLB Åõ¼ö Åõ±¸¼ö ºĞ¼® ´ë½Ãº¸µå")
+st.title("? MLB íˆ¬ìˆ˜ íˆ¬êµ¬ìˆ˜ ë¶„ì„ ëŒ€ì‹œë³´ë“œ")
 
-# ³¯Â¥ ¹üÀ§ ¼±ÅÃ
-start_date = st.date_input("½ÃÀÛ ³¯Â¥", value=date(2025, 4, 1))
-end_date = st.date_input("Á¾·á ³¯Â¥", value=date(2025, 4, 5))
+# ë‚ ì§œ ë²”ìœ„ ì„ íƒ
+start_date = st.date_input("ì‹œì‘ ë‚ ì§œ", value=date(2025, 4, 1))
+end_date = st.date_input("ì¢…ë£Œ ë‚ ì§œ", value=date(2025, 4, 5))
 
-# ÆÀ ¼±ÅÃ
-selected_team = st.selectbox("ÆÀ ¼±ÅÃ", teams)
+# íŒ€ ì„ íƒ
+selected_team = st.selectbox("íŒ€ ì„ íƒ", teams)
 
-# CSV µ¥ÀÌÅÍ ºÒ·¯¿À±â
+# CSV ë°ì´í„° ë¶ˆëŸ¬ì˜¤ê¸°
 @st.cache_data
 def load_data():
-    df = pd.read_csv("/Users/kyengwook/Documents/Baseball/PB/mlb_pbp_data/mlb_pbp_2025.csv")
+    df = pd.read_csv("/Users/kyengwook/Documents/Baseball/PB/mlb_pbp_data/mlb_pbp_2025.csv", encoding='cp949')
+
     df = df[df['game_type'] == 'R']
     df['game_date'] = pd.to_datetime(df['game_date'])
     return df
@@ -30,7 +31,7 @@ df = load_data()
 df = df.set_index('game_date')
 df_filtered = df.loc[str(start_date):str(end_date)].copy()
 
-# ¿¬Åõ °è»ê ÇÔ¼ö
+# ì—°íˆ¬ ê³„ì‚° í•¨ìˆ˜
 def calculate_consecutive_counts_and_dates(df_pivot):
     b2b = {}
     highlight_dates = {}
@@ -48,40 +49,40 @@ def calculate_consecutive_counts_and_dates(df_pivot):
         highlight_dates[col] = b2b_highlight_dates
     return b2b, highlight_dates
 
-# ÆÀ ÇÊÅÍ¸µ
+# íŒ€ í•„í„°ë§
 df_team = df_filtered[
     ((df_filtered['away_team'] == selected_team) & (df_filtered['inning_topbot'] == 'Bot')) |
     ((df_filtered['home_team'] == selected_team) & (df_filtered['inning_topbot'] == 'Top'))
 ]
 
-# ÇÇ¹ş Å×ÀÌºí »ı¼º
+# í”¼ë²— í…Œì´ë¸” ìƒì„±
 df_pivot = df_team.groupby(['game_date', 'player_name']).size().reset_index(name='pitch_count')
 df_pivot = df_pivot.pivot(index='game_date', columns='player_name', values='pitch_count').fillna(0).astype(int)
 df_pivot.index = df_pivot.index.date
 
-# ¿­ Á¤·Ä
+# ì—´ ì •ë ¬
 column_totals = df_pivot.sum().sort_values(ascending=False)
 df_pivot = df_pivot[column_totals.index]
 
-# ÃÑÇÕ ¹× ¿¬Åõ °è»ê
+# ì´í•© ë° ì—°íˆ¬ ê³„ì‚°
 df_pivot.loc['Total'] = df_pivot.sum()
 b2b, highlight_info = calculate_consecutive_counts_and_dates(df_pivot.iloc[:-1])
 df_pivot.loc['Back-to-Back'] = pd.Series(b2b)
 
-# ¼¿ °­Á¶ ÇÔ¼ö
+# ì…€ ê°•ì¡° í•¨ìˆ˜
 def highlight_cells(val, row, col, date_val, team):
     style = ''
     if row in ['Total', 'Back-to-Back']:
         return ''
     if isinstance(val, (int, float)) and val >= 70:
-        style += 'background-color: #ff9999;'  # »¡°£»ö
+        style += 'background-color: #ff9999;'  # ë¹¨ê°„ìƒ‰
     b2b_dates = highlight_info.get(col, set())
     if isinstance(date_val, date) and date_val in b2b_dates:
-        style += 'background-color: #add8e6;'  # ÆÄ¶õ»ö
+        style += 'background-color: #add8e6;'  # íŒŒë€ìƒ‰
     return style
 
-# ½ºÅ¸ÀÏ ÁöÁ¤
-styled = df_pivot.style.set_caption(f"{selected_team} ÆÀ Åõ±¸¼ö ({start_date} ~ {end_date})") \
+# ìŠ¤íƒ€ì¼ ì§€ì •
+styled = df_pivot.style.set_caption(f"{selected_team} íŒ€ íˆ¬êµ¬ìˆ˜ ({start_date} ~ {end_date})") \
     .set_properties(**{'text-align': 'center', 'padding': '8px', 'line-height': '1.6'}) \
     .set_table_styles([
         {'selector': 'th', 'props': [('text-align', 'center'), ('padding', '8px'), ('line-height', '1.6')]},
@@ -92,5 +93,5 @@ styled = df_pivot.style.set_caption(f"{selected_team} ÆÀ Åõ±¸¼ö ({start_date} ~ 
         for row, val in zip(df.index, col)
     ], axis=0), axis=None)
 
-# Ç¥½Ã
+# í‘œì‹œ
 st.write(styled.to_html(), unsafe_allow_html=True)
