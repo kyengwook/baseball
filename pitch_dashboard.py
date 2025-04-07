@@ -5,13 +5,17 @@ import io
 import requests
 
 
-teams = ['BAL', 'LAA', 'MIL', 'SF', 'PIT', 'DET', 'SEA', 'COL', 'AZ', 'TOR',
-         'CWS', 'NYM', 'ATL', 'STL', 'KC', 'PHI', 'MIN', 'BOS', 'CLE', 'NYY',
-         'WSH', 'TB', 'CIN', 'CHC', 'HOU', 'MIA', 'TEX', 'SD', 'OAK', 'LAD', 'ARI']
+teams = ['LAD', 'SD', 'SF', 'AZ', 'COL',
+         'CHC, 'MIL', 'STL', 'CIN', PIT',
+         'PHI', 'NYM', 'MIA', 'WSH', 'ATL',
+         'NYY', 'BOS', 'TOR', 'TB', 'BAL',
+         'DET', 'KC', 'CLE', 'MIN', 'CWS',
+         'TEX', 'LAA', 'HOU', 'ATH', 'SEA']
+         
 
 
 st.set_page_config(layout="wide")
-st.title("⚾ MLB Pitches")
+st.title("⚾ MLB Pitches by Game")
 
 # 날짜 범위 선택
 start_date = st.date_input("Start Date", value=date(2025, 3, 18))
