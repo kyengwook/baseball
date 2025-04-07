@@ -16,13 +16,13 @@ teams = ['LAD', 'SD', 'SF', 'AZ', 'COL',
 
 st.set_page_config(layout="wide")
 st.title("⚾ MLB Pitches by Game")
-
+# 팀 선택
+selected_team = st.selectbox("Select Team", teams)
 # 날짜 범위 선택
 start_date = st.date_input("Start Date", value=date(2025, 3, 18))
 end_date = st.date_input("End Date", value=date(2025, 4, 5))
 
-# 팀 선택
-selected_team = st.selectbox("Select Team", teams)
+
 
 # CSV 데이터 로드 함수 (Google Drive 링크 사용)
 @st.cache_data
