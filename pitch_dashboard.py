@@ -11,14 +11,14 @@ teams = ['BAL', 'LAA', 'MIL', 'SF', 'PIT', 'DET', 'SEA', 'COL', 'AZ', 'TOR',
 
 # 페이지 설정
 st.set_page_config(layout="wide")
-st.title("⚾ MLB 투수 투구수 분석 대시보드")
+st.title("⚾ MLB Pitches")
 
 # 날짜 범위 선택
-start_date = st.date_input("시작 날짜", value=date(2025, 4, 1))
-end_date = st.date_input("종료 날짜", value=date(2025, 4, 5))
+start_date = st.date_input("Start Date", value=date(2025, 4, 1))
+end_date = st.date_input("End Date", value=date(2025, 4, 5))
 
 # 팀 선택
-selected_team = st.selectbox("팀 선택", teams)
+selected_team = st.selectbox("Select Team", teams)
 
 # CSV 데이터 로드 함수 (Google Drive 링크 사용)
 @st.cache_data
@@ -95,7 +95,7 @@ def highlight_cells(val, row, col, date_val, team):
     return style
 
 # 스타일 지정
-styled = df_pivot.style.set_caption(f"{selected_team} 팀 투구수 ({start_date} ~ {end_date})") \
+styled = df_pivot.style.set_caption(f"{selected_team} Pitches by Game ({start_date} ~ {end_date})") \
     .set_properties(**{'text-align': 'center', 'padding': '8px', 'line-height': '1.6'}) \
     .set_table_styles([
         {'selector': 'th', 'props': [('text-align', 'center'), ('padding', '8px'), ('line-height', '1.6')]},
