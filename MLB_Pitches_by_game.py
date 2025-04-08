@@ -29,6 +29,18 @@ with st.expander("ℹ️ 도움말"):
     - Back-to-Back: 해당 투수의 기간 내 연투 횟수
 
     🔄 새로운 데이터를 반영하려면 캐시를 삭제하거나 페이지를 새로고침하세요.
+
+    ℹ️ Help
+    ** This dashboard shows the number of pitches thrown by each team's pitchers in the 2025 MLB regular season, game by game.**
+
+    - Select Team: Choose the team you want to analyze.
+    - Start/End Date: Specify the date range for your analysis.
+    - Red cells: The pitcher threw 60 or more pitches in a single game.
+    - Blue cells: Indicates a back-to-back appearance (pitched on consecutive days).
+    - Total: Total number of pitches by the pitcher during the selected period.
+    - Back-to-Back: Number of back-to-back appearances during the selected period.
+
+    🔄 To reflect updated data, clear the cache or refresh the page.
     """)
          
 # 팀 선택
