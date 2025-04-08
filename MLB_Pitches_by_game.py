@@ -20,7 +20,7 @@ st.title("⚾ MLB Pitches by Game")
 selected_team = st.selectbox("Select Team", teams)
 # 날짜 범위 선택
 start_date = st.date_input("Start Date", value=date(2025, 3, 18))
-end_date = st.date_input("End Date", value=date(2025, 4, 8))
+end_date = st.date_input("End Date", value=date(2025, 4, 6))
 
 
 
