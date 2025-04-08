@@ -43,7 +43,9 @@ with st.expander("ℹ️ HELP"):
     🔄 새로운 데이터를 반영하려면 캐시를 삭제하거나 페이지를 새로고침하세요.
     """)
 
-st.caption("📊 Data Source: [Baseball Savant](https://baseballsavant.mlb.com/) – MLB 2025 regular season data.")
+st.caption("🛠️ App developed by Kyengwook ([Instagram @kyengwook](https://instagram.com/kyengwook))")
+st.caption("📊 Data source: [Baseball Savant](https://baseballsavant.mlb.com/) – MLB 2025 regular season data.")
+
          
 # 팀 선택
 selected_team = st.selectbox("Select Team", teams)
