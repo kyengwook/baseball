@@ -28,7 +28,6 @@ with st.expander("ℹ️ HELP"):
     - Total: Total number of pitches by the pitcher during the selected period.
     - Back-to-Back: Number of back-to-back appearances during the selected period.
 
-    🔄 To reflect updated data, clear the cache or refresh the page.
     
 
     **MLB 2025 각 팀 투수의 투구 수를 경기별로 나타냅니다.**
@@ -40,7 +39,6 @@ with st.expander("ℹ️ HELP"):
     - Total: 해당 투수의 기간 내 총 투구 수
     - Back-to-Back: 해당 투수의 기간 내 연투 횟수
 
-    🔄 새로운 데이터를 반영하려면 캐시를 삭제하거나 페이지를 새로고침하세요.
     """)
 st.caption("🧑🏻‍💻 App developed by Kyengwook  |  📬 kyengwook8@naver.com  |  [GitHub](https://github.com/kyengwook/kyengwook)  |  [Instagram](https://instagram.com/kyengwook)")
 st.caption("📊 Data source: [Baseball Savant](https://baseballsavant.mlb.com/) – MLB 2025 regular season data.")
@@ -52,9 +50,9 @@ start_date = st.date_input("Start Date", value=date(2025, 3, 18))
 end_date = st.date_input("End Date", value=date(2025, 4, 7))
 
 # 새로고침 버튼
-if st.button("🔄 Update"):
-    st.cache_data.clear()
-    st.experimental_rerun()
+#if st.button("🔄 Update"):
+    #st.cache_data.clear()
+    #st.experimental_rerun()
 
 # CSV 데이터 로드
 @st.cache_data
