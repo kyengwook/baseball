@@ -30,8 +30,8 @@ with st.expander("ℹ️ 도움말"):
 
     🔄 새로운 데이터를 반영하려면 캐시를 삭제하거나 페이지를 새로고침하세요.
 
-    ℹ️ Help
-    ** This dashboard shows the number of pitches thrown by each team's pitchers in the 2025 MLB regular season, game by game.**
+
+    **This dashboard shows the number of pitches thrown by each team's pitchers in the 2025 MLB regular season, game by game.**
 
     - Select Team: Choose the team you want to analyze.
     - Start/End Date: Specify the date range for your analysis.
