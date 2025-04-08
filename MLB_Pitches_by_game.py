@@ -20,7 +20,7 @@ st.title("⚾ MLB Pitches by Game")
 selected_team = st.selectbox("Select Team", teams)
 # 날짜 범위 선택
 start_date = st.date_input("Start Date", value=date(2025, 3, 18))
-end_date = st.date_input("End Date", value=date(2025, 4, 6))
+end_date = st.date_input("End Date", value=date(2025, 4, 7))
 
 
 
@@ -33,6 +33,7 @@ def load_data_from_drive():
     response.raise_for_status()
     df = pd.read_csv(io.StringIO(response.content.decode("utf-8")), encoding='utf-8')
     df = df[df['game_type'] == 'R']
+    df['Player name'] = df['player_name']
     df['game_date'] = pd.to_datetime(df['game_date'])
     df = df.set_index('game_date').sort_index()
     return df
@@ -73,8 +74,8 @@ df_team = df_filtered[
 ]
 
 # 피벗 테이블 생성
-df_pivot = df_team.groupby(['game_date', 'player_name']).size().reset_index(name='pitch_count')
-df_pivot = df_pivot.pivot(index='game_date', columns='player_name', values='pitch_count').fillna(0).astype(int)
+df_pivot = df_team.groupby(['game_date', 'player name']).size().reset_index(name='pitch_count')
+df_pivot = df_pivot.pivot(index='game_date', columns='player name', values='pitch_count').fillna(0).astype(int)
 df_pivot.index = df_pivot.index.date
 
 # 열 정렬
