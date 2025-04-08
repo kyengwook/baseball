@@ -42,7 +42,8 @@ with st.expander("ℹ️ HELP"):
 
     🔄 새로운 데이터를 반영하려면 캐시를 삭제하거나 페이지를 새로고침하세요.
     """)
-
+st.caption("🛠️ App developed by Kyengwook  |  📬 kyengwook8@naver.com  |  [GitHub](https://github.com/kyengwook/kyengwook)  |  [Instagram](https://instagram.com/kyengwook)")
+st.caption("📊 Data source: [Baseball Savant](https://baseballsavant.mlb.com/) – MLB 2025 regular season data.")
          
 # 팀 선택
 selected_team = st.selectbox("Select Team", teams)
@@ -142,8 +143,6 @@ styled = df_pivot.style.set_caption(f"📊{selected_team} Pitches by Game ({star
         for row, val in zip(df.index, col)
     ], axis=0), axis=None)
 
-st.caption("🛠️ App developed by Kyengwook  |  📬 kyengwook8@naver.com  |  [GitHub](https://github.com/kyengwook/kyengwook)  |  [Instagram](https://instagram.com/kyengwook)")
-st.caption("📊 Data source: [Baseball Savant](https://baseballsavant.mlb.com/) – MLB 2025 regular season data.")
 
 # 결과 표시
 st.write(styled.to_html(), unsafe_allow_html=True)
