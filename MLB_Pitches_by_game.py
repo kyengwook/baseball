@@ -17,16 +17,16 @@ teams = ['LAD', 'SD', 'SF', 'AZ', 'COL',
 st.set_page_config(layout="wide")
 st.title("⚾ MLB Pitches by Game")
 
-with st.expander("ℹ️ 사용법 안내"):
+with st.expander("ℹ️ 도움말"):
     st.markdown("""
-    이 대시보드는 MLB 정규 시즌 동안 팀별 투수들의 경기별 투구 수를 시각화합니다.
+    **MLB 2025 각 팀 투수의 투구 수를 경기별로 나타냅니다.**
 
-    - **Select Team**: 분석할 팀을 선택합니다.
-    - **Start/End Date**: 원하는 날짜 범위를 지정합니다.
-    - **빨간색 셀**: 한 경기에서 60구 이상을 던진 경우 강조됩니다.
-    - **파란색 셀**: 연투(Back-to-Back)가 발생한 날짜입니다.
-    - **Total**: 해당 투수의 기간 내 총 투구 수입니다.
-    - **Back-to-Back**: 연속 등판한 횟수입니다.
+    - Select Team: 분석할 팀을 선택합니다.
+    - Start/End Date: 원하는 날짜 범위를 지정합니다.
+    - 빨간색 셀: 한 경기에서 60구 이상을 던진 경우.
+    - 파란색 셀: 연투(Back-to-Back)가 발생한 경우.
+    - Total: 해당 투수의 기간 내 총 투구 수
+    - Back-to-Back: 해당 투수의 기간 내 연투 횟수
 
     🔄 새로운 데이터를 반영하려면 캐시를 삭제하거나 페이지를 새로고침하세요.
     """)
