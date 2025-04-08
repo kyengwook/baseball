@@ -22,6 +22,10 @@ selected_team = st.selectbox("Select Team", teams)
 start_date = st.date_input("Start Date", value=date(2025, 3, 18))
 end_date = st.date_input("End Date", value=date(2025, 4, 7))
 
+# 새로고침 버튼
+if st.button("🔄 데이터 새로고침"):
+    st.cache_data.clear()
+    st.experimental_rerun()
 
 # CSV 데이터 로드
 @st.cache_data
