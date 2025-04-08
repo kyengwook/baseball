@@ -74,8 +74,8 @@ df_team = df_filtered[
 ]
 
 # 피벗 테이블 생성
-df_pivot = df_team.groupby(['game_date', 'player name']).size().reset_index(name='pitch_count')
-df_pivot = df_pivot.pivot(index='game_date', columns='player name', values='pitch_count').fillna(0).astype(int)
+df_pivot = df_team.groupby(['game_date', 'Player name']).size().reset_index(name='pitch_count')
+df_pivot = df_pivot.pivot(index='game_date', columns='Player name', values='pitch_count').fillna(0).astype(int)
 df_pivot.index = df_pivot.index.date
 
 # 열 정렬
