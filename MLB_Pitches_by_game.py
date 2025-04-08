@@ -29,6 +29,7 @@ with st.expander("ℹ️ HELP"):
     - Back-to-Back: Number of back-to-back appearances during the selected period.
 
     🔄 To reflect updated data, clear the cache or refresh the page.
+    
 
     **MLB 2025 각 팀 투수의 투구 수를 경기별로 나타냅니다.**
 
@@ -41,6 +42,8 @@ with st.expander("ℹ️ HELP"):
 
     🔄 새로운 데이터를 반영하려면 캐시를 삭제하거나 페이지를 새로고침하세요.
     """)
+
+st.caption("📊 Data Source: [Baseball Savant](https://baseballsavant.mlb.com/) – MLB 2025 regular season data.")
          
 # 팀 선택
 selected_team = st.selectbox("Select Team", teams)
