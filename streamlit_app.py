@@ -3,13 +3,14 @@ import plotly.graph_objects as go
 import streamlit as st
 from pybaseball import statcast_pitcher
 
-# ? ³¯Â¥¿Í Åõ¼ö ID ÀÔ·Â
+# ? ë‚ ì§œì™€ íˆ¬ìˆ˜ ID ì…ë ¥
 date = '2025-04-21'
-pitcher_id = 605400  # ¿¹½Ã: Shohei Ohtani
+pitcher_id = 605400  # ì˜ˆì‹œ: Shohei Ohtani
 
-# ? µ¥ÀÌÅÍ ºÒ·¯¿À±â
+# ? ë°ì´í„° ë¶ˆëŸ¬ì˜¤ê¸°
 df = statcast_pitcher(date, date, pitcher_id)
-batter_ID = pd.read_excel('/Users/kyengwook/Documents/Baseball/PB/Batter_ID2023.xlsx')
+batter_ID = pd.read_excel('/Users/kyengwook/Documents/Baseball/PB/Batter_ID2023.xlsx', engine='openpyxl')
+
 
 df['release_speed'] = df['release_speed'] * 1.60934
 df['release_speed'] = round(df['release_speed'], 1)
@@ -27,11 +28,11 @@ filtered_df = df[df['batter_name'] == selected_batter]
 inning_options = filtered_df['inning'].unique()
 selected_inning = st.selectbox('Select Inning', inning_options)
 
-# ÇÊÅÍ¸µ
+# í•„í„°ë§
 filtered_df = filtered_df[filtered_df['inning'] == selected_inning]
 filtered_df = filtered_df.sort_values(by='pitch_number')
 
-# ? Plotly ½Ã°¢È­
+# ? Plotly ì‹œê°í™”
 L, R = -0.708333, 0.708333
 Bot, Top = 1.5, 3.5
 
@@ -80,7 +81,7 @@ for pitch_name, style in pitch_styles.items():
         )
     )
 
-# ½ºÆ®¶óÀÌÅ©Á¸°ú Å¸¼® Ãß°¡
+# ìŠ¤íŠ¸ë¼ì´í¬ì¡´ê³¼ íƒ€ì„ ì¶”ê°€
 scatter_fig.add_shape(type='rect', x0=L, x1=R, y0=Bot, y1=Top, line=dict(color='black', width=2))
 scatter_fig.add_shape(type='path', 
     path=f'M {R-0.1},{0} L {L+0.1},{0} L {L-0.1},{-0.6} L 0,{-1.0} L {R+0.1},{-0.6} Z',
@@ -97,7 +98,7 @@ scatter_fig.update_layout(
 
 st.plotly_chart(scatter_fig)
 
-# ? Å×ÀÌºí
+# ? í…Œì´ë¸”
 st.subheader("Pitch Details")
 st.dataframe(filtered_df[['pitch_number', 'pitch_name', 'outs_when_up', 'balls', 'strikes',
                           'release_speed', 'release_spin_rate', 'type', 'description']])
