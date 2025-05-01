@@ -15,7 +15,7 @@ teams = ['LAD', 'SD', 'SF', 'AZ', 'COL',
 
 
 st.set_page_config(layout="wide")
-st.title("⚾ MLB Pitches by Game")
+st.title("⚾ MLB 2025 - Pitches by Game")
 
 with st.expander("ℹ️ HELP"):
     st.markdown("""
