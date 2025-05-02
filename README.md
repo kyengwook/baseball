@@ -21,7 +21,7 @@
 Baseball
 - K-Means Clustering을 활용한 수비 위치 추천
 - 선형회귀분석을 활용한 선수별 평균 타구속도 예측
-- RandomForest를 활용한 홈런 여부 판단 모델 개발
+- RandomForest를 활용한 구장별 홈런 여부 판단 모델 개발
 - 트래킹 데이터를 활용한 선수 간 유사도 분석
 - Q-Learning을 활용한 경기 상황별 구종, 로케이션 추천 시스템 개발
 - Streamlit 기반 MLB 투구/타격 정보 시각화 대시보드 제작
