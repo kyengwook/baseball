@@ -54,14 +54,33 @@ if st.button("🔄 Update"):
     st.cache_data.clear()
     st.experimental_rerun()
 
-# CSV 데이터 로드
+import pandas as pd
+import requests
+import io
+import streamlit as st
+
 @st.cache_data
 def load_data_from_drive():
-    file_id = "1sWJCEA7MUrOCGfj61ES1JQHJGBfYVYN3"  
+    file_id = "1sWJCEA7MUrOCGfj61ES1JQHJGBfYVYN3"
     download_url = f"https://drive.google.com/uc?export=download&id={file_id}"
     response = requests.get(download_url)
     response.raise_for_status()
+
+    # 파일 내용 첫 500자 확인 (정말 CSV인지 체크)
+    st.write(response.content.decode("utf-8")[:500])
+
     df = pd.read_csv(io.StringIO(response.content.decode("utf-8")), encoding='utf-8')
+
+    # 컬럼명 확인 + 공백 제거
+    st.write("원래 컬럼명:", df.columns.tolist())
+    df.columns = df.columns.str.strip()
+    st.write("공백 제거 후 컬럼명:", df.columns.tolist())
+
+    # 컬럼 존재 여부 체크
+    if 'game_type' not in df.columns:
+        st.error("❌ 'game_type' 컬럼이 존재하지 않습니다!")
+        st.stop()
+
     df = df[df['game_type'] == 'R']
     df['game_date'] = pd.to_datetime(df['game_date'])
     df = df.set_index('game_date').sort_index()
@@ -69,6 +88,8 @@ def load_data_from_drive():
 
 # 데이터 불러오기
 df = load_data_from_drive()
+st.write(df.head())
+
 
 # 날짜 범위 확인
 if df.index.min() > pd.to_datetime(start_date) or df.index.max() < pd.to_datetime(end_date):
