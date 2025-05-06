@@ -68,7 +68,7 @@ def load_data_from_drive():
 
 # 데이터 불러오기
 df = load_data_from_drive()
-st.write(df.head())
+
 
 
 # 날짜 범위 확인
