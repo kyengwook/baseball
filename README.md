@@ -1,5 +1,9 @@
 <h1>김경욱 - Kyengwook, Kim</h1>
 
+MLB 투구수/연투 확인 대시보드 - 
+
+
+
 [Personal History]
 - 부경대학교 해양수산경영학 / 빅데이터융합전공 4학년 2학기 재학
   
