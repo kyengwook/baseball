@@ -47,7 +47,7 @@ st.caption("📊 Data source: [Baseball Savant](https://baseballsavant.mlb.com/)
 selected_team = st.selectbox("Select Team", teams)
 # 날짜 범위 선택
 start_date = st.date_input("Start Date", value=date(2025, 3, 18))
-end_date = st.date_input("End Date", value=date(2025, 5, 4))
+end_date = st.date_input("End Date", value=date(2025, 5, 9))
 
 # 새로고침 버튼
 if st.button("🔄 Update"):
@@ -56,16 +56,14 @@ if st.button("🔄 Update"):
 
 @st.cache_data
 def load_data_from_drive():
-    file_id = "1sWJCEA7MUrOCGfj61ES1JQHJGBfYVYN3"  
-    download_url = f"https://drive.google.com/uc?export=download&id={file_id}"
-    response = requests.get(download_url)
-    response.raise_for_status()
-    df = pd.read_csv(io.StringIO(response.content.decode("utf-8")), encoding='utf-8')
+    url = 'https://drive.google.com/uc?id=1vZB9axWHpzUB5ixNG9Q3JtxTxQsCDMD4'
+    output = 'data.csv'
+    gdown.download(url, output, quiet=False)
+    df = pd.read_csv(output)
     df = df[df['game_type'] == 'R']
     df['game_date'] = pd.to_datetime(df['game_date'])
     df = df.set_index('game_date').sort_index()
     return df
-
 # 데이터 불러오기
 df = load_data_from_drive()
 
