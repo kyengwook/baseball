@@ -1,7 +1,7 @@
 <h1>김경욱 - Kyengwook, Kim</h1>
 
 - MLB 투구수/연투 확인 대시보드 - https://pitchesbygame.streamlit.app/
-- MLB 경기별 투구 대시보드 - https://mlbpitchdaily.streamlit.app/
+- MLB 경기별 투구 대시보드 - https://mlbpitchdailym.streamlit.app/
 
 
 
