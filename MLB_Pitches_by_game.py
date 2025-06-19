@@ -46,8 +46,8 @@ st.caption("📊 Data source: [Baseball Savant](https://baseballsavant.mlb.com/)
 # 팀 선택
 selected_team = st.selectbox("Select Team", teams)
 # 날짜 범위 선택
-start_date = st.date_input("Start Date", value=date(2025, 5, 13))
-end_date = st.date_input("End Date", value=date(2025, 6, 13))
+start_date = st.date_input("Start Date", value=date(2025, 5, 17))
+end_date = st.date_input("End Date", value=date(2025, 6, 17))
 
 # 새로고침 버튼
 if st.button("🔄 Update"):
