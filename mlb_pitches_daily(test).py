@@ -41,7 +41,7 @@ st.caption("📊 Data source: [Baseball Savant](https://baseballsavant.mlb.com/)
 
 selected_team = st.selectbox("Select Team", teams)
 start_date = st.date_input("Start Date", value=date(2025, 6, 16))
-end_date = st.date_input("End Date", value=date(2025, 7, 16))
+end_date = st.date_input("End Date", value=date(2025, 7, 13))
 
 if st.button("🔄 Update"):
     st.cache_data.clear()
