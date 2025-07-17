@@ -75,9 +75,11 @@ df_team = df_filtered[
 ]
 
 # 피벗 테이블 생성
-df_pivot = df_pivot.pivot(index='game_date', columns='player_name', values='pitch_count').fillna(0).astype(int)
+df_pivot_raw = df_team.groupby(['game_date', 'player_name']).size().reset_index(name='pitch_count')
+df_pivot = df_pivot_raw.pivot(index='game_date', columns='player_name', values='pitch_count').fillna(0).astype(int)
 df_pivot.index = df_pivot.index.date
 df_pivot.columns.name = "Player name"
+
 
 # 🎯 선수 선택 기능 추가 (알파벳 순 정렬)
 all_players = sorted(df_pivot.columns.tolist())
