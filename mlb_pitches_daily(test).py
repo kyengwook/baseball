@@ -120,8 +120,15 @@ df_pivot.loc['Back-to-Back'] = pd.Series(b2b)
 
 # 📌 OFF DAY 시 표시용 텍스트로 대체
 df_display = df_pivot.copy()
+
+# OFF DAY: "DAY OFF"로 채우기
 for d in off_days:
     df_display.loc[d] = ['DAY OFF'] * df_display.shape[1]
+
+# 0인 값을 빈 문자열로 변경 (단, Total과 Back-to-Back, DAY OFF 제외)
+for row in df_display.index:
+    if row not in ['Total', 'Back-to-Back'] and row not in off_days:
+        df_display.loc[row] = df_display.loc[row].replace(0, '')
 
 # 셀 강조 함수
 def highlight_cells(val, row, col, date_val):
