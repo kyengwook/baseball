@@ -75,10 +75,16 @@ df_team = df_filtered[
 ]
 
 # 피벗 테이블 생성
-df_pivot = df_team.groupby(['game_date', 'player_name']).size().reset_index(name='pitch_count')
 df_pivot = df_pivot.pivot(index='game_date', columns='player_name', values='pitch_count').fillna(0).astype(int)
 df_pivot.index = df_pivot.index.date
 df_pivot.columns.name = "Player name"
+
+# 🎯 선수 선택 기능 추가 (알파벳 순 정렬)
+all_players = sorted(df_pivot.columns.tolist())
+selected_players = st.multiselect("Select Players", all_players, default=all_players)
+
+# 선택된 선수만 필터링
+df_pivot = df_pivot[selected_players]
 
 # 날짜 전체 생성
 all_dates = pd.date_range(start=start_date, end=end_date).date
