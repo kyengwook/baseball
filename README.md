@@ -2,12 +2,10 @@
 
 - MLB 투구수/연투 확인 대시보드 - https://pitchesbygame.streamlit.app/
 - MLB 경기별 투구정보 대시보드 - https://mlbpitchdailym.streamlit.app/
-- MLB 경기별 타격정보 대시보드 - https://mlbbatterdashboard.streamlit.app/
-
 
 
 [Personal History]
-- 부경대학교 해양수산경영학 / 빅데이터융합전공 4학년 2학기 재학
+- 부경대학교 해양수산경영학 / 빅데이터융합전공 졸업예정
   
 
 [Career]
