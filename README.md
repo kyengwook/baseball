@@ -11,7 +11,7 @@
 [Career]
 - 스포츠투아이(2025~)
 - NC 다이노스 육성팀 (2023)
-- 야구공작소 칼럼팀 (2022~)
+- 야구공작소 칼럼팀 (2022~) https://yagongso.com/?s=%EA%B9%80%EA%B2%BD%EC%9A%B1
   
 
 [Competency]
