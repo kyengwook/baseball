@@ -1,8 +1,7 @@
 # 1. Import packages
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
+from pybaseball import statcast
 from pybaseball import statcast_pitcher
 
 # 2. Define function to calculate VAA
@@ -22,7 +21,6 @@ def calculate_vaa(vy0, ay, vz0, az, y0=50.0, yf=17.0/12.0):
 #pitcher_id = 695243  
 #start_date = '2025-03-28'
 #end_date = '2025-09-30'
-
 #df = statcast_pitcher(start_date, end_date, pitcher_id)
 
 # Optional: Filter regular season only
