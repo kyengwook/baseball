@@ -6,7 +6,6 @@ from pybaseball import statcast_pitcher
 # function to calculate VAA
 def calculate_vaa(vy0, ay, vz0, az, y0=50.0, yf=17.0/12.0):
     try:
-        # Final y-velocity at home plate
         vy_f = -np.sqrt(vy0**2 - 2 * ay * (y0 - yf))
     except:
         return np.nan
