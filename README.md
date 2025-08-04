@@ -2,7 +2,7 @@
 
 - 기술?블로그 - https://baseballdata.tistory.com/
 - MLB 경기별 투구수/연투 확인 대시보드 - https://mlbpitchesdaily.streamlit.app/
-- MLB 경기별 투구정보 대시보드 - https://mlbpitchdailym.streamlit.app/
+- MLB 경기별 투구정보 대시보드 - https://mlbpitchinfo.streamlit.app/
 
 
 [Personal History]
