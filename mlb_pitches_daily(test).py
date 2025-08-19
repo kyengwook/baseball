@@ -40,8 +40,8 @@ st.caption("🧑🏻‍💻 App developed by Kyengwook  |  📬 kyengwook8@naver
 st.caption("📊 Data source: [Baseball Savant](https://baseballsavant.mlb.com/) – MLB 2025 regular season data.")
 
 selected_team = st.selectbox("Select Team", teams)
-start_date = st.date_input("Start Date", value=date(2025, 7, 10))
-end_date = st.date_input("End Date", value=date(2025, 8, 10))
+start_date = st.date_input("Start Date", value=date(2025, 7, 18))
+end_date = st.date_input("End Date", value=date(2025, 8, 18))
 
 if st.button("🔄 Update"):
     st.cache_data.clear()
