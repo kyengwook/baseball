@@ -93,31 +93,18 @@ all_dates = pd.date_range(start=start_date, end=end_date).date
 existing_dates = set(df_pivot.index)
 off_days = [d for d in all_dates if d not in existing_dates]
 
-# 📌 표시용 DataFrame 생성
+# 📌 OFF DAY 시 표시용 텍스트로 대체
 df_display = df_pivot.copy()
-# 📌 OFF DAY 시 pd.NA로 채우기
-for d in off_days:
-    df_display.loc[d] = [pd.NA] * df_display.shape[1]
+df_display = df_display.astype("object")  # ← 표시용은 object로 캐스팅
 
-# 0인 값을 빈 문자열로 변경 (단, Total과 Back-to-Back 제외)
+# OFF DAY: "DAY OFF"로 채우기
+for d in off_days:
+    df_display.loc[d] = ['DAY OFF'] * df_display.shape[1]
+
+# 0인 값을 빈 문자열로 변경 (단, Total과 Back-to-Back, DAY OFF 제외)
 for row in df_display.index:
     if row not in ['Total', 'Back-to-Back'] and row not in off_days:
         df_display.loc[row] = df_display.loc[row].replace(0, '')
-
-# 스타일링 (DAY OFF는 na_rep으로 표시)
-styled = df_display.style.set_caption(
-        f"📊{selected_team} Pitches by Game ({start_date} ~ {end_date})"
-    ) \
-    .set_properties(**{'text-align': 'center', 'padding': '8px', 'line-height': '1.6'}) \
-    .set_table_styles([
-        {'selector': 'th', 'props': [('text-align', 'center'), ('padding', '8px'), ('line-height', '1.6')]},
-        {'selector': 'td', 'props': [('padding', '8px'), ('line-height', '1.6')]}
-    ]) \
-    .apply(lambda df: df.apply(lambda col: [
-        highlight_cells(val, row, col.name, date_val=row if isinstance(row, date) else None)
-        for row, val in zip(df.index, col)
-    ], axis=0), axis=None) \
-    .format(na_rep="DAY OFF")   # ← 여기서 DAY OFF 표시
 
 # Total & Back-to-Back 계산 전용 df (OFF DAY 포함)
 column_totals = df_pivot.sum().sort_values(ascending=False)
