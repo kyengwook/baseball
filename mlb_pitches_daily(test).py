@@ -105,6 +105,18 @@ for d in off_days:
 for row in df_display.index:
     if row not in ['Total', 'Back-to-Back'] and row not in off_days:
         df_display.loc[row] = df_display.loc[row].replace(0, '')
+             
+# ✅ 인덱스 순서를 '날짜(오름차순) + ["Total", "Back-to-Back"]'로 고정
+idx = pd.Index(df_display.index)
+as_dt = pd.to_datetime(idx, errors='coerce')  # 날짜면 Timestamp, 아니면 NaT
+
+date_mask = ~as_dt.isna()
+date_idx_sorted = as_dt[date_mask].sort_values()  # 날짜만 시간순
+# 날짜 라벨을 현재 인덱스 형식(date/Timestamp)에 맞춰 복원
+date_labels = [d.date() if hasattr(d, "date") else d for d in date_idx_sorted]
+
+tail_labels = [lab for lab in ["Total", "Back-to-Back"] if lab in df_display.index]
+df_display = df_display.reindex(date_labels + tail_labels)
 
 # Total & Back-to-Back 계산 전용 df (OFF DAY 포함)
 column_totals = df_pivot.sum().sort_values(ascending=False)
