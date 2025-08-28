@@ -187,5 +187,8 @@ styled = styled.format(
     subset=(date_rows_non_off, df_display.columns)
 )
 
+# 📌 모든 숫자를 정수로 표시
+styled = styled.format(formatter="{:.0f}".format, na_rep="DAY OFF")
+
 # 출력
 st.write(styled.to_html(), unsafe_allow_html=True)
