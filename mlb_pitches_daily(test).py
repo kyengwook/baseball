@@ -74,31 +74,27 @@ df_team = df_filtered[
     ((df_filtered['home_team'] == selected_team) & (df_filtered['inning_topbot'] == 'Top'))
 ]
 
-# 피벗 테이블 생성
+# 피벗 테이블 생성 (게임별 투수별 투구수)
 df_pivot_raw = df_team.groupby(['game_date', 'player_name']).size().reset_index(name='pitch_count')
 df_pivot = df_pivot_raw.pivot(index='game_date', columns='player_name', values='pitch_count').fillna(0).astype(int)
 df_pivot.index = df_pivot.index.date
 df_pivot.columns.name = "Player name"
 
-
-# 🎯 선수 선택 기능 추가 (알파벳 순 정렬)
+# 🎯 선수 선택
 all_players = sorted(df_pivot.columns.tolist())
 selected_players = st.multiselect("Select Players", all_players, default=all_players)
-
-# 선택된 선수만 필터링
 df_pivot = df_pivot[selected_players]
 
-# 날짜 전체 생성
+# 날짜 전체 생성 + OFF DAY 결정
 all_dates = pd.date_range(start=start_date, end=end_date).date
 existing_dates = set(df_pivot.index)
 off_days = [d for d in all_dates if d not in existing_dates]
 
-# OFF DAY 행 추가 (숫자 0으로)
+# OFF DAY 행 추가(숫자 0으로 채워 미리 자리를 만들고 인덱스 정렬)
 off_day_rows = pd.DataFrame(0, index=off_days, columns=df_pivot.columns)
-df_pivot = pd.concat([df_pivot, off_day_rows])
-df_pivot = df_pivot.sort_index()
+df_pivot = pd.concat([df_pivot, off_day_rows]).sort_index()
 
-# Total & Back-to-Back 계산 전용 df (OFF DAY 포함)
+# 컬럼 정렬: 기간 내 총 투구수 많은 순
 column_totals = df_pivot.sum().sort_values(ascending=False)
 df_pivot = df_pivot[column_totals.index]
 
@@ -120,48 +116,76 @@ def calculate_consecutive_counts_and_dates(df_pivot_data):
         highlight_dates[col] = b2b_highlight_dates
     return b2b, highlight_dates
 
-# Total 및 Back-to-Back 추가
+# -----------------------------
+# Total & Back-to-Back 계산
+# -----------------------------
 df_pivot.loc['Total'] = df_pivot.sum()
 b2b, highlight_info = calculate_consecutive_counts_and_dates(df_pivot.loc[df_pivot.index != 'Total'])
-
 df_pivot.loc['Back-to-Back'] = pd.Series(b2b)
 
-# 📌 OFF DAY 시 표시용 텍스트로 대체
+# -----------------------------
+# 표시용 DataFrame
+# -----------------------------
 df_display = df_pivot.copy()
 
-# OFF DAY: "DAY OFF"로 채우기
-for d in off_days:
-    df_display.loc[d] = ['DAY OFF'] * df_display.shape[1]
+# OFF DAY 행은 pd.NA로 채워서 출력에서 "DAY OFF"로만 보이게
+if len(off_days) > 0:
+    df_display.loc[off_days] = pd.NA
 
-# 0인 값을 빈 문자열로 변경 (단, Total과 Back-to-Back, DAY OFF 제외)
-for row in df_display.index:
-    if row not in ['Total', 'Back-to-Back'] and row not in off_days:
-        df_display.loc[row] = df_display.loc[row].replace(0, '')
+# -----------------------------
+# 인덱스 순서: 날짜(오름차순) + ["Total","Back-to-Back"]
+# -----------------------------
+date_rows = [idx for idx in df_display.index if isinstance(idx, date)]
+sorted_dates = sorted(date_rows)
+tail_labels = [lab for lab in ["Total", "Back-to-Back"] if lab in df_display.index]
+df_display = df_display.reindex(sorted_dates + tail_labels)
 
-# 셀 강조 함수
+# -----------------------------
+# 셀 스타일 함수
+# -----------------------------
 def highlight_cells(val, row, col, date_val):
     style = ''
+    # 요약 행은 스타일 제외
     if row in ['Total', 'Back-to-Back']:
         return ''
-    if isinstance(val, (int, float)) and val >= 60:
-        style += 'background-color: #ff9999;'
-    if isinstance(date_val, date) and date_val in highlight_info.get(col, set()):
-        style += 'background-color: #add8e6;'
+    # OFF DAY: 회색 배경 + 이탤릭
     if isinstance(date_val, date) and date_val in off_days:
         style += 'color: gray; font-style: italic; background-color: #f0f0f0;'
+        return style  # OFF DAY는 다른 색보다 우선
+    # 60구 이상: 빨간색
+    if isinstance(val, (int, float)) and pd.notna(val) and val >= 60:
+        style += 'background-color: #ff9999;'
+    # 연투 날짜: 파란색
+    if isinstance(date_val, date) and date_val in highlight_info.get(col, set()):
+        style += 'background-color: #add8e6;'
     return style
 
-# 스타일링
-styled = df_display.style.set_caption(f"📊{selected_team} Pitches by Game ({start_date} ~ {end_date})") \
-    .set_properties(**{'text-align': 'center', 'padding': '8px', 'line-height': '1.6'}) \
+# -----------------------------
+# Styler 구성
+# -----------------------------
+styled = (
+    df_display.style
+    .set_caption(f"📊{selected_team} Pitches by Game ({start_date} ~ {end_date})")
+    .set_properties(**{'text-align': 'center', 'padding': '8px', 'line-height': '1.6'})
     .set_table_styles([
         {'selector': 'th', 'props': [('text-align', 'center'), ('padding', '8px'), ('line-height', '1.6')]},
         {'selector': 'td', 'props': [('padding', '8px'), ('line-height', '1.6')]}
-    ]) \
-    .apply(lambda df: df.apply(lambda col: [
+    ])
+    # 색칠
+    .apply(lambda df_: df_.apply(lambda col: [
         highlight_cells(val, row, col.name, date_val=row if isinstance(row, date) else None)
-        for row, val in zip(df.index, col)
+        for row, val in zip(df_.index, col)
     ], axis=0), axis=None)
+    # OFF DAY는 "DAY OFF"로 표시
+    .format(na_rep="DAY OFF")
+)
+
+# 0을 빈칸으로(날짜 행에만, Total/Back-to-Back 제외)
+date_rows_non_off = [d for d in sorted_dates if d not in off_days]
+styled = styled.format(
+    formatter=lambda v: '' if (pd.notna(v) and v == 0) else v,
+    subset=(date_rows_non_off, df_display.columns)
+)
 
 # 출력
 st.write(styled.to_html(), unsafe_allow_html=True)
