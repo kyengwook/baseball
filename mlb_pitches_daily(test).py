@@ -93,30 +93,10 @@ all_dates = pd.date_range(start=start_date, end=end_date).date
 existing_dates = set(df_pivot.index)
 off_days = [d for d in all_dates if d not in existing_dates]
 
-# 📌 OFF DAY 시 표시용 텍스트로 대체
-df_display = df_pivot.copy()
-df_display = df_display.astype("object")  # ← 표시용은 object로 캐스팅
-
-# OFF DAY: "DAY OFF"로 채우기
-for d in off_days:
-    df_display.loc[d] = ['DAY OFF'] * df_display.shape[1]
-
-# 0인 값을 빈 문자열로 변경 (단, Total과 Back-to-Back, DAY OFF 제외)
-for row in df_display.index:
-    if row not in ['Total', 'Back-to-Back'] and row not in off_days:
-        df_display.loc[row] = df_display.loc[row].replace(0, '')
-             
-# ✅ 인덱스 순서를 '날짜(오름차순) + ["Total", "Back-to-Back"]'로 고정
-idx = pd.Index(df_display.index)
-as_dt = pd.to_datetime(idx, errors='coerce')  # 날짜면 Timestamp, 아니면 NaT
-
-date_mask = ~as_dt.isna()
-date_idx_sorted = as_dt[date_mask].sort_values()  # 날짜만 시간순
-# 날짜 라벨을 현재 인덱스 형식(date/Timestamp)에 맞춰 복원
-date_labels = [d.date() if hasattr(d, "date") else d for d in date_idx_sorted]
-
-tail_labels = [lab for lab in ["Total", "Back-to-Back"] if lab in df_display.index]
-df_display = df_display.reindex(date_labels + tail_labels)
+# OFF DAY 행 추가 (숫자 0으로)
+off_day_rows = pd.DataFrame(0, index=off_days, columns=df_pivot.columns)
+df_pivot = pd.concat([df_pivot, off_day_rows])
+df_pivot = df_pivot.sort_index()
 
 # Total & Back-to-Back 계산 전용 df (OFF DAY 포함)
 column_totals = df_pivot.sum().sort_values(ascending=False)
