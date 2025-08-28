@@ -93,6 +93,8 @@ all_dates = pd.date_range(start=start_date, end=end_date).date
 existing_dates = set(df_pivot.index)
 off_days = [d for d in all_dates if d not in existing_dates]
 
+# 📌 표시용 DataFrame 생성
+df_display = df_pivot.copy()
 # 📌 OFF DAY 시 pd.NA로 채우기
 for d in off_days:
     df_display.loc[d] = [pd.NA] * df_display.shape[1]
