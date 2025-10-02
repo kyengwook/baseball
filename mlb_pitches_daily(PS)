@@ -15,7 +15,7 @@ st.title("⚾ MLB POST SEASON 2025 - Pitches by Game")
 
 with st.expander("ℹ️ HELP"):
     st.markdown("""
-    **This dashboard shows the number of pitches thrown by each team's pitchers in the 2025 MLB regular season, game by game.**
+    **This dashboard shows the number of pitches thrown by each team's pitchers in the 2025 MLB post season, game by game.**
 
     - Select Team: Choose the team you want to analyze.
     - Start/End Date: Specify the date range for your analysis.
@@ -35,11 +35,11 @@ with st.expander("ℹ️ HELP"):
     """)
 
 st.caption("🧑🏻‍💻 App developed by Kyengwook  |  📬 kyengwook8@naver.com  |  [GitHub](https://github.com/kyengwook/kyengwook)  |  [Instagram](https://instagram.com/kyengwook)")
-st.caption("📊 Data source: [Baseball Savant](https://baseballsavant.mlb.com/) – MLB 2025 regular season data.")
+st.caption("📊 Data source: [Baseball Savant](https://baseballsavant.mlb.com/) – MLB 2025 post season data.")
 
 selected_team = st.selectbox("Select Team", teams)
-start_date = st.date_input("Start Date", value=date(2025, 8, 15))
-end_date = st.date_input("End Date", value=date(2025, 9, 10))
+start_date = st.date_input("Start Date", value=date(2025, 9, 30))
+end_date = st.date_input("End Date", value=date(2025, 10, 02))
 
 if st.button("🔄 Update"):
     st.cache_data.clear()
@@ -47,7 +47,7 @@ if st.button("🔄 Update"):
 
 @st.cache_data
 def load_data_from_drive():
-    url = 'https://drive.google.com/uc?id=1vZB9axWHpzUB5ixNG9Q3JtxTxQsCDMD4'
+    url = 'https://drive.google.com/uc?id=1RJ_MrkAOYdoy4MDMHaN5ftKij8xWG-sy'
     output = 'data.csv'
     gdown.download(url, output, quiet=False)
     df = pd.read_csv(output)
