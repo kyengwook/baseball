@@ -5,10 +5,16 @@ import io
 import requests
 import gdown
 
-teams = ['LAD', 'SD','CHC',
-        'MIL','CIN', 'PHI',
-        'NYY', 'BOS', 'TOR',
-        'DET', 'CLE','SEA']
+teams = ['LAD','CIN' 
+         'SD','CHC',  
+        'NYY', 'BOS', 
+        'DET', 'CLE']
+
+
+#teams = ['LAD', 'SD','CHC',
+        #'MIL','CIN', 'PHI',
+        #'NYY', 'BOS', 'TOR',
+        #'DET', 'CLE','SEA']
 
 st.set_page_config(layout="wide")
 st.title("⚾ MLB POST SEASON 2025 - Pitches by Game")
