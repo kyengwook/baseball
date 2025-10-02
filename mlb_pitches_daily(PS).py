@@ -5,7 +5,7 @@ import io
 import requests
 import gdown
 
-teams = ['LAD','CIN' 
+teams = ['LAD','CIN', 
          'SD','CHC',  
         'NYY', 'BOS', 
         'DET', 'CLE']
