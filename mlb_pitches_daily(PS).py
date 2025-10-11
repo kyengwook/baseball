@@ -11,7 +11,7 @@ import gdown
         #'DET', 'CLE']
 
 
-#teams = ['LAD', 'SD','CHC',
+teams = ['LAD', 'SD','CHC',
         'MIL','CIN', 'PHI',
         'NYY', 'BOS', 'TOR',
         'DET', 'CLE','SEA']
