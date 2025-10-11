@@ -5,16 +5,16 @@ import io
 import requests
 import gdown
 
-teams = ['LAD','CIN', 
-         'SD','CHC',  
-        'NYY', 'BOS', 
-        'DET', 'CLE']
+#teams = ['LAD','CIN', 
+         #'SD','CHC',  
+        #'NYY', 'BOS', 
+        #'DET', 'CLE']
 
 
 #teams = ['LAD', 'SD','CHC',
-        #'MIL','CIN', 'PHI',
-        #'NYY', 'BOS', 'TOR',
-        #'DET', 'CLE','SEA']
+        'MIL','CIN', 'PHI',
+        'NYY', 'BOS', 'TOR',
+        'DET', 'CLE','SEA']
 
 st.set_page_config(layout="wide")
 st.title("⚾ MLB POST SEASON 2025 - Pitches by Game")
@@ -45,7 +45,7 @@ st.caption("📊 Data source: [Baseball Savant](https://baseballsavant.mlb.com/)
 
 selected_team = st.selectbox("Select Team", teams)
 start_date = st.date_input("Start Date", value=date(2025, 9, 30))
-end_date = st.date_input("End Date", value=date(2025, 10, 1))
+end_date = st.date_input("End Date", value=date(2025, 10, 9))
 
 if st.button("🔄 Update"):
     st.cache_data.clear()
